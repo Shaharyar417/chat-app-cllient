@@ -6,16 +6,24 @@ import {
 import React, { useState } from "react";
 import Dropzone from "react-dropzone";
 
-function MessageFormUI({ setAttachment, message, handleChange, handleSubmit }) {
+const MessageFormUI = ({
+  setAttachment,
+  message,
+  handleChange,
+  handleSubmit,
+  appendText,
+  handleKeyDown,
+}) => {
   const [preview, setPreview] = useState("");
+
   return (
     <div className="message-form-container">
       {preview && (
         <div className="message-form-preview">
           <img
+            alt="message-form-preview"
             className="message-form-preview-image"
             src={preview}
-            alt="image"
             onLoad={() => URL.revokeObjectURL(preview)}
           />
           <XMarkIcon
@@ -34,8 +42,17 @@ function MessageFormUI({ setAttachment, message, handleChange, handleSubmit }) {
             type="text"
             value={message}
             onChange={handleChange}
-            placeholder="send a messa"
+            onKeyDown={handleKeyDown}
+            placeholder="Send a message..."
           />
+          {appendText && (
+            <input
+              className="message-form-assist"
+              type="text"
+              disabled="disabled"
+              value={`${message} ${appendText}`}
+            />
+          )}
         </div>
         <div className="message-form-icons">
           <Dropzone
@@ -70,6 +87,6 @@ function MessageFormUI({ setAttachment, message, handleChange, handleSubmit }) {
       </div>
     </div>
   );
-}
+};
 
 export default MessageFormUI;
